@@ -1,0 +1,26 @@
+#!/usr/bin/with-contenv bash
+
+### Set Defaults and Sanity Test
+DB_NAME=${DB_NAME:-"admin"}
+
+### Set Debug Mode
+if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ]; then
+    set -x
+fi
+
+if [ ! -f "/data/db/.mongodb_init" ]; then
+	if [ "$DB_NAME" != "admin" ]; then
+	    if [ ! -n "$DB_USER" ]; then
+	        echo "** [mongodb] ERROR: You've requested an additional database but no Database User Entered! "
+	        exit 1
+	    fi
+
+	    if [ ! -n "$DB_PASS" ]; then
+	        echo "** [mongodb] ERROR: You've requested an additional database but no Database Pass Entered! "
+	        exit 1
+	    fi 
+	fi
+fi
+
+mkdir -p /tmp/tate
+touch /tmp/state/10-mongodb-init
