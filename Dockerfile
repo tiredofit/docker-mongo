@@ -1,4 +1,4 @@
-FROM tiredofit/alpine/edge
+FROM tiredofit/alpine:edge
 LABEL maintainer="Dave Conroy (dave at tiredofit dot ca)"
 
 ### Environment Variables
