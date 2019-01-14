@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  mongo-db:
+    container_name: mongo-db
+    image: tiredofit/mongo/3.6-latest
+    volumes:
+     - ./db:/data/db
+     #- ./logs:/data/logs
+    environment:
+      - ZABBIX_HOSTNAME=mongo-db
+
+      - ENABLE_LOGS=FALSE
+      - ENABLE_SMALLFILES=FALSE
+    restart: unless-stopped
+    networks:
+      - proxy-tier
+
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy
+
