@@ -1,3 +1,7 @@
+## 3.1 2019-04-20 <dave at tiredofit dot ca>
+
+* Use mongodb packages from tiredofit/mongo-builder due to Alpine removing from package repository
+
 ## 3.0 2019-01-14 <dave at tiredofit dot ca>
 
 * Refactored image to support environment variables and a more usable startup process.
