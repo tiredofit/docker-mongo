@@ -1,26 +1,62 @@
 #!/usr/bin/with-contenv bash
 
-### Set Defaults and Sanity Test
-DB_NAME=${DB_NAME:-"admin"}
+source /assets/functions/00-container
+prepare_service
+PROCESS_NAME="mongodb"
 
-### Set Debug Mode
-if [ "$DEBUG_MODE" = "TRUE" ] || [ "$DEBUG_MODE" = "true" ]; then
-    set -x
+mkdir -p /data/db
+
+if var_true $ENABLE_LOGS ; then
+    mkdir -p /data/logs
+    cat <<EOF > /etc/logrotate.d/mongodb.conf
+/data/logs/*.log {
+daily
+ifempty
+rotate 7
+missingok
+compress
+dateext
+copytruncate
+}
+EOF
 fi
 
 if [ ! -f "/data/db/.mongodb_init" ]; then
-	if [ "$DB_NAME" != "admin" ]; then
-	    if [ ! -n "$DB_USER" ]; then
-	        echo "** [mongodb] ERROR: You've requested an additional database but no Database User Entered! "
-	        exit 1
-	    fi
+    if [ ! -f "/data/db/.mongodb_password_set" ]; then
+        print_notice "Configuring MongoDB Start up Options"
+        silent sudo -u mongodb $cmd --logpath /dev/null &
 
-	    if [ ! -n "$DB_PASS" ]; then
-	        echo "** [mongodb] ERROR: You've requested an additional database but no Database Pass Entered! "
-	        exit 1
-	    fi 
-	fi
+        ### Wait for MongoDB to boot
+        COUNTER=1
+        while [[ COUNTER -ne 0 ]]; do
+            print_notice "Waiting for confirmation of MongoDB service startup"
+            sleep 5
+            silent mongo admin --eval "help"
+            COUNTER=$?
+        done
+         
+        ### Create the admin user 
+        print_notice "Creating admin user with a password in MongoDB"
+        silent mongo admin --eval "db.createUser({user: '$ADMIN_USER', pwd: '$ADMIN_PASS', roles:[{role:'root',db:'admin'}]});"
+        sleep 3
+ 
+        ### If we've defined the DB_NAME environment variable and it's a different database than admin, then create the user for that database.
+        if [ "$DB_NAME" != "admin" ]; then
+            print_notice "Creating a DB:$DB_NAME user with a password in MongoDB"
+            silent mongo admin -u $ADMIN_USER -p $ADMIN_PASS << EOF
+use $DB_NAME
+db.createUser({user: '$DB_USER', pwd: '$DB_PASS', roles:[{role:'dbOwner',db:'$DB_NAME'}]})
+EOF
+        fi
+ 
+        sleep 1
+        touch /data/db/.mongodb_password_set
+        echo "First Initialized on:" `date` >/data/db/.mongodb_init
+        echo "Initial Version:" `mongod --version | head -n1 | awk '{print $3}'` > /data/db/.mongodb_init
+        silent mongod --shutdown
+    fi
 fi
 
-mkdir -p /tmp/tate
-touch /tmp/state/10-mongodb-init
+chown -R mongodb:mongodb /data/
+
+liftoff

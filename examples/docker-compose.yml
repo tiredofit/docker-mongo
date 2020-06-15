@@ -3,7 +3,7 @@ version: '2'
 services:
   mongo-db:
     container_name: mongo-db
-    image: registry.selfdesign.org/docker/mongo/4.0:latest
+    image: registry.selfdesign.org/docker/mongo/4.2:latest
     volumes:
      - ./db:/data/db
      #- ./logs:/data/logs

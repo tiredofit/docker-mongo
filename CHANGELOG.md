@@ -1,3 +1,49 @@
+## 3.5.0 2020-06-15 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update base image to support tiredofit/debian base image 5.x series
+      - MongoDB 4.2.7
+
+
+## 3.4.1 2020-01-17 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix container startup routine
+
+
+## 3.4.0 2020-01-12 <dave at tiredofit dot ca>
+
+   ### Added
+      - Update to support new tiredofit/debian base image
+
+
+## 3.3.1 2019-12-15 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Remove ENABLE_SMALL_FILES option
+
+
+## 3.3.0 2019-12-15 <dave at tiredofit dot ca>
+
+   ### Added
+      - MongoDB 4.2.2
+
+   ### Changed
+      - Switch to tiredoft/debian:buster as base due to Alpine compilation/licensing issues
+
+
+## 3.2.2 2019-06-09 <dave at tiredofit dot ca>
+
+* Fix ENABLE_SMALLFILES environment variable
+
+## 3.2.1 2019-04-27 <dave at tiredofit dot ca>
+
+* Fix startup script
+
+## 3.2 2019-04-27 <dave at tiredofit dot ca>
+
+* Add ENABLE _REPLICATION
+
 ## 3.1 2019-04-20 <dave at tiredofit dot ca>
 
 * Use mongodb packages from tiredofit/mongo-builder due to Alpine removing from package repository

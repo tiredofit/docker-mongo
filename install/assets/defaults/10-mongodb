@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+ADMIN_USER=${ADMIN_USER:-"admin"}
+ADMIN_PASS=${ADMIN_PASS:-"admin"}
+DB_NAME=${DB_NAME:-"admin"}
+DB_PORT=${DB_PORT:-"27017"}
