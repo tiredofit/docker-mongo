@@ -1,0 +1,12 @@
+#!/command/with-contenv bash
+
+ADMIN_USER=${ADMIN_USER:-"admin"}
+ADMIN_PASS=${ADMIN_PASS:-"admin"}
+DATA_PATH=${DATA_PATH:-"/data/db/"}
+DB_NAME=${DB_NAME:-"admin"}
+DB_PORT=${DB_PORT:-"27017"}
+ENABLE_JOURNALING=${ENABLE_JOURNALING:-"TRUE"}
+LOG_FILE=${LOG_FILE:-"mongo.log"}
+LOG_PATH=${LOG_PATH:-"/logs/"}
+LOG_TYPE=${LOG_TYPE:-"FILE"}
+STORAGE_ENGINE=${STORAGE_ENGINE:-"wiredTiger"}

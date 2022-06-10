@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  mongo-db:
+    container_name: mongo-db
+    image: docker.io/tiredofit/docker-mongo/5.0:latest
+    volumes:
+      - ./db:/data/db
+      - ./logs:/logs
+    environment:
+      - TIMEZONE=America/Vancouver
+      - CONTAINER_NAME=mongo-db
+    restart: unless-stopped
+    networks:
+      - proxy-tier
+
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy
+
