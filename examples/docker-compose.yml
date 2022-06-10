@@ -3,15 +3,13 @@ version: '2'
 services:
   mongo-db:
     container_name: mongo-db
-    image: registry.selfdesign.org/docker/mongo/4.2:latest
+    image: docker.io/tiredofit/docker-mongo/4.4:latest
     volumes:
-     - ./db:/data/db
-     #- ./logs:/data/logs
+      - ./db:/data/db
+      - ./logs:/logs
     environment:
-      - ZABBIX_HOSTNAME=mongo-db
-
-      - ENABLE_LOGS=FALSE
-      - ENABLE_SMALLFILES=FALSE
+      - TIMEZONE=America/Vancouver
+      - CONTAINER_NAME=mongo-db
     restart: unless-stopped
     networks:
       - proxy-tier
