@@ -1,0 +1,23 @@
+#!/command/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service
+PROCESS_NAME="mongodb"
+
+if [ ! -f "/data/db/.mongodb_init" ]; then
+	if [ "${DB_NAME}" != "admin" ]; then
+		sanity_var DB_USER "Database User"
+		sanity_var DB_PASS "Database Pass"
+	fi
+fi
+
+mkdir -p "${DATA_PATH}"
+chown -R mongo "${DATA_PATH}"
+
+if [ "${LOG_TYPE,,}" = "file" ] ; then
+	mkdir -p "${LOG_PATH}"
+	chown -R mongo:mongo "${LOG_PATH}"
+	create_logrotate mongo "${LOG_PATH}/${LOG_FILE}" none mongo mongo
+fi
+
+liftoff
