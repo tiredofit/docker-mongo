@@ -1,3 +1,9 @@
+## 4.0.1 2022-06-24 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Update image name when inside the container
+
+
 ## 4.0.0 2022-06-10 <dave at tiredofit dot ca>
 
    ### Added

@@ -8,6 +8,8 @@ ARG GO_VERSION=1.18.3
 ENV MONGO_VERSION=${MONGO_VERSION:-r4.4.14} \
     MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-master} \
     CONTAINER_ENABLE_MESSAGING=FALSE
+    IMAGE_NAME="tiredofit/mongo:4.4" \
+    IMAGE_REPO_URL="https://github.com/tiredofit/docker-mongo"
 
 RUN set -x && \
     addgroup --gid 27017 mongodb && \
