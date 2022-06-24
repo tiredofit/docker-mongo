@@ -1,3 +1,9 @@
+## 4.0.2 2022-06-24 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Bugfix 4.0.1
+
+
 ## 4.0.1 2022-06-24 <dave at tiredofit dot ca>
 
    ### Changed
