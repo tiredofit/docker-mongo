@@ -10,3 +10,45 @@ LOG_FILE=${LOG_FILE:-"mongo.log"}
 LOG_PATH=${LOG_PATH:-"/logs/"}
 LOG_TYPE=${LOG_TYPE:-"FILE"}
 STORAGE_ENGINE=${STORAGE_ENGINE:-"wiredTiger"}
+SETUP_TYPE=${SETUP_TYPE:-"AUTO"}
+REPLICATION_INIT=${REPLICATION_INIT:-"TRUE"}
+REPLICATION_SET=${REPLICATION_SET:-"rs0"}
+
+if [ "${SETUP_TYPE,,}" = "auto" ] ; then
+    mongocmd="--bind_ip 0.0.0.0 --port ${DB_PORT} --storageEngine ${STORAGE_ENGINE} --timeStampFormat iso8601-local --dbpath ${DATA_PATH}"
+
+    if [ "${LOG_TYPE,,}" = "file" ] ; then
+        mongocmd="${mongocmd} --logpath ${LOG_PATH}/${LOG_FILE} --logappend"
+    else
+        SHOW_OUTPUT=TRUE
+    fi
+
+    if var_true ${ENABLE_AUTHENTICATION} ; then
+        mongocmd="${mongocmd} --auth"
+    fi
+
+    if var_false ${ENABLE_JOURNALING} ; then
+        mongocmd="${mongocmd} --nojournal"
+    fi
+
+    if var_true "${ENABLE_REPLICATION}" ; then
+        mongocmd="${mongocmd} --replSet ${REPLICATION_SET}"
+        REPLICATION_HOSTS=${REPLICATION_HOSTS:-"0:localhost:${DB_PORT}:1"}
+    fi
+
+    if [ -n "${MAX_CONNECTIONS}" ]; then
+        mongocmd="${mongocmd} --maxConns ${MAX_CONNECTIONS}"
+    fi
+
+    if [ "$OPLOG_SIZE" != "" ]; then
+        mongocmd="${mongocmd} --oplogSize ${OPLOG_SIZE}"
+    fi
+fi
+
+if [ -n "${ADDITIONAL_PARAMETERS}" ]; then
+    mongocmd="$mongocmd ${ADDITIONAL_PARAMETERS}"
+fi
+
+if [ -n "${CONFIG_FILE}" ] ; then
+    mongocmd="--config ${CONFIG_FILE} ${mongocmd}"
+fi

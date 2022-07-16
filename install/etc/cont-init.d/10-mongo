@@ -4,20 +4,79 @@ source /assets/functions/00-container
 prepare_service
 PROCESS_NAME="mongodb"
 
-if [ ! -f "/data/db/.mongodb_init" ]; then
-	if [ "${DB_NAME}" != "admin" ]; then
-		sanity_var DB_USER "Database User"
-		sanity_var DB_PASS "Database Pass"
-	fi
-fi
-
 mkdir -p "${DATA_PATH}"
-chown -R mongo "${DATA_PATH}"
+chown mongo:mongo "${DATA_PATH}"
 
 if [ "${LOG_TYPE,,}" = "file" ] ; then
 	mkdir -p "${LOG_PATH}"
 	chown -R mongo:mongo "${LOG_PATH}"
 	create_logrotate mongo "${LOG_PATH}/${LOG_FILE}" none mongo mongo
+fi
+
+if [ ! -f "${DATA_PATH}"/.mongodb_init ]; then
+    if var_false "{$SKIP_INIT}" ; then
+        if [ ! -f "${DATA_PATH}"/.mongodb_password_set ]; then
+            print_notice "Configuring MongoDB Start up Options"
+            if var_true "${ENABLE_REPLICATION}" ; then
+                mongoinitcmd=$(echo ${mongocmd} | sed -i "s|--replSet ${REPLICATION_SET}||g")
+            else
+                mongoinitcmd=${mongocmd}
+            fi
+
+            silent s6-setuidgid mongo mongod ${mongoinitcmd} &
+
+            counter=1
+            while [[ counter -ne 0 ]]; do
+                print_notice "Waiting for confirmation of MongoDB service startup"
+                sleep 5
+                silent mongo admin --eval "help"
+                counter=$?
+            done
+
+            ### Create the admin user
+            print_notice "Creating admin with password"
+            silent mongo admin --eval "db.createUser({user: '${ADMIN_USER}', pwd: '${ADMIN_PASS}', roles:[{role:'root',db:'admin'}]});"
+            sleep 2
+
+            ### If we've defined the DB_NAME environment variable and it's a different database than admin, then create the user for that database.
+            if [ "${DB_NAME}" != "admin" ]; then
+                sanity_var DB_USER "Database User"
+                sanity_var DB_PASS "Database Pass"
+
+                print_notice "Creating a DB:${DB_NAME} user with password"
+                silent s6-setuidgid mongo admin -u "${ADMIN_USER}" -p "${ADMIN_PASS}" << EOF
+use ${DB_NAME}
+db.createUser({user: '${DB_USER}', pwd: '${DB_PASS}', roles:[{role:'dbOwner',db:'${DB_NAME}'}]})
+EOF
+            fi
+            sleep 1
+            touch "${DATA_PATH}"/.mongodb_password_set
+        fi
+        echo "Initial Version: $(mongod --version | head -n1 | awk '{print $3}') | First Initialized on: $(date)" > "${DATA_PATH}"/.mongodb_init
+        silent s6-setuidgid mongo mongod --shutdown
+    fi
+fi
+
+if var_true "${ENABLE_REPLICATION}" && var_true "${REPLICATION_INIT}" ; then
+    print_notice "Initializing Replica Set"
+    silent s6-setuidgid mongo mongod ${mongocmd} &
+    counter=1
+    while [[ counter -ne 0 ]]; do
+        print_notice "Waiting for confirmation of MongoDB service startup"
+        sleep 5
+        silent mongo admin --eval "help"
+        counter=$?
+    done
+    replication_hosts=$(echo "${REPLICATION_HOSTS}" | tr "," "\n")
+    for host in $replication_hosts; do
+        replication_members="${replication_members}{ _id: $(echo ${host} | awk -F : '{print $1}') , host: '$(echo ${host} | awk -F : '{print $2}'):$(echo ${host} | awk -F : '{print $3}')', priority: $(echo ${host} | awk -F : '{print $4}') },"
+    done
+
+    silent s6-setuidgid mongo mongo --eval "rs.initiate({ _id: '${REPLICATION_SET}', members: [${replication_members}]})"
+
+    echo "Waiting to become a master"
+    echo 'while (!db.isMaster().ismaster) { sleep(100); }' | mongo
+    silent s6-setuidgid mongo mongod --shutdown
 fi
 
 liftoff

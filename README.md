@@ -70,21 +70,27 @@ Be sure to view the following repositories to understand all the customizable op
 | ------------------------------------------------------ | -------------------------------------- |
 | [OS Base](https://github.com/tiredofit/docker-debian/) | Customized Image based on Debian Linux |
 
-| Parameter               | Description                                      | Default    |
-| ----------------------- | ------------------------------------------------ | ---------- |
-| `ADDITIONAL_PARAMETERS` | Pass additional parameters to the mongod process |            |
-| `ADMIN_NAME`            | Administrator Account name                       | `admin`    |
-| `ADMIN_PASS`            | Password of Admin user                           | `admin`    |
-| `DATA_PATH`             | Data Location                                    | `/data/db` |
-| `DB_NAME`               | Name of Database to create                       | `admin`    |
-| `DB_PORT`               | MongoDB Listening Port                           | `27017`    |
-| `ENABLE_AUTHENTICATION` | Enable Authentication Features                   | `FALSE`    |
-| `ENABLE_JOURNALING`     | Enable Journaling `TRUE` `FALSE`                 | `TRUE`     |
-| `ENABLE_REPLICATION`    | Enable Replication                               | `FALSE     |
-| `LOG_PATH`              | Log Path                                         | `/logs`    |
-| `MAX_CONNECTIONS`       | Maximum Connections                              | ``         |
-| `OPLOG_SIZE`            | OPLog Size                                       | ``         |
-| `REPLICATION_NAME`      | Name of Replication Set                          |            |
+| Parameter               | Description                                                                                                    | Default                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| `SETUP_MODE`            | Auto configure based on environment variables `AUTO` or `MANUAL`                                               | `AUTO`                   |
+| `ADDITIONAL_PARAMETERS` | Pass additional parameters to the mongod process (works with `SETUP_MODE=MANUAL`                               |                          |
+| `CONFIG_FILE`           | Map and use a config file. Works with both `SETUP_MODE` values. All environment variables override config file |                          |
+| `ADMIN_NAME`            | Administrator Account name                                                                                     | `admin`                  |
+| `ADMIN_PASS`            | Password of Admin user                                                                                         | `admin`                  |
+| `DATA_PATH`             | Data Location                                                                                                  | `/data/db`               |
+| `DB_NAME`               | Name of Database to create                                                                                     | `admin`                  |
+| `DB_PORT`               | MongoDB Listening Port                                                                                         | `27017`                  |
+| `ENABLE_AUTHENTICATION` | Enable Authentication Features                                                                                 | `FALSE`                  |
+| `ENABLE_JOURNALING`     | Enable Journaling `TRUE` `FALSE`                                                                               | `TRUE`                   |
+| `LOG_PATH`              | Log Path                                                                                                       | `/logs`                  |
+| `MAX_CONNECTIONS`       | Maximum Connections                                                                                            |                          |
+| `OPLOG_SIZE`            | OPLog Size                                                                                                     |                          |
+| `SKIP_INIT`             | Skip creating databases and admin users if used in a replica set                                               | `FALSE`                  |
+| `ENABLE_REPLICATION`    | Enable Replication                                                                                             | `FALSE`                  |
+| `REPLICATION_SET`       | Name of Replication Set                                                                                        | `rs0`                    |
+| `REPLICATION_INIT`      | Initialize the Replica set                                                                                     |                          |
+| `REPLICATION_HOSTS`     | Comma seperated list of hosts to init the replica set                                                          | `0:localhost:$DB_PORT:1` |
+|                         | Syntax is `id:hostname:port:priority`                                                                          |                          |
 
 
 ### Networking

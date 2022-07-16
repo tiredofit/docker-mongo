@@ -1,3 +1,12 @@
+## 4.0.3 2022-07-16 <dave at tiredofit dot ca>
+
+   ### Added
+      - Rework image
+      - Introdcuce Replica set intialization
+      - Add ability to load Config File
+      - Add ability to skip initialization for secondary servers
+
+
 ## 4.0.2 2022-06-24 <dave at tiredofit dot ca>
 
    ### Changed
