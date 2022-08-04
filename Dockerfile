@@ -3,7 +3,7 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG MONGO_VERSION
 ARG MONGO_TOOLS_VERSION
-ARG GO_VERSION=1.18.3
+ARG GO_VERSION=1.18.5
 
 ENV MONGO_VERSION=${MONGO_VERSION:-r4.2.20} \
     MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-master} \
@@ -12,8 +12,8 @@ ENV MONGO_VERSION=${MONGO_VERSION:-r4.2.20} \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-mongo"
 
 RUN set -x && \
-    addgroup --gid 27017 mongodb && \
-    adduser --uid 27017 --gid 27017 --gecos "Mongo User" --disabled-password mongodb && \
+    addgroup --gid 27017 mongo && \
+    adduser --uid 27017 --gid 27017 --gecos "Mongo User" --disabled-password mongo && \
     apt-get update && \
     apt-get upgrade -y && \
     BUILD_DEPS="\

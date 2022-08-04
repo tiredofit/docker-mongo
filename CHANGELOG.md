@@ -1,3 +1,13 @@
+## 4.0.4 2022-08-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Refresh base image
+      - Go Buildchain 1.18.5
+
+   ### Reverted
+      - Fix Mongo DB Username
+
+
 ## 4.0.3 2022-07-16 <dave at tiredofit dot ca>
 
    ### Added
