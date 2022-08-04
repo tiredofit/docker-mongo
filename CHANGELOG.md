@@ -1,3 +1,10 @@
+## 4.0.3 2022-08-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Go buildchain 1.18.5
+      - Refresh base image
+
+
 ## 4.0.2 2022-07-16 <dave at tiredofit dot ca>
 
    ### Added
