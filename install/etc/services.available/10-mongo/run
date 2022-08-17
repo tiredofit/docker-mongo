@@ -7,4 +7,4 @@ check_container_initialized
 check_service_initialized init
 
 print_start "Starting MongoDB ${MONGO_VERSION/r/}"
-s6-setuidgid mongo mongod ${mongocmd}
+exec s6-setuidgid mongo mongod ${mongocmd}
