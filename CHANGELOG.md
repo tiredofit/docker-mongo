@@ -1,3 +1,12 @@
+## 4.0.5 2022-10-04 <dave at tiredofit dot ca>
+
+   ### Added
+      - Mongo 5.0.13
+
+   ### Changed
+      - Change the way git cloning works in Dockerfile
+
+
 ## 4.0.4 2022-08-17 <dave at tiredofit dot ca>
 
    ### Changed
