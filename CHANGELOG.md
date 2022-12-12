@@ -1,3 +1,9 @@
+## 4.0.7 2022-12-12 <dave at tiredofit dot ca>
+
+   ### Added
+      - MongoDB 6.0.3
+
+
 ## 4.0.6 2022-12-12 <dave at tiredofit dot ca>
 
    ### Changed
