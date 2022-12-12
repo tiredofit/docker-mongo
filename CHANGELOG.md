@@ -1,3 +1,10 @@
+## 4.0.6 2022-12-12 <dave at tiredofit dot ca>
+
+   ### Changed
+      - Fix build process
+      - Fix issue with creating a secondary user
+
+
 ## 4.0.5 2022-10-04 <dave at tiredofit dot ca>
 
    ### Added
