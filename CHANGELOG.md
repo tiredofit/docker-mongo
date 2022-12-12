@@ -1,3 +1,9 @@
+## 4.0.6 2022-12-12 <dave at tiredofit dot ca>
+
+   ### Added
+      - Mongo 4.4.18
+
+
 ## 4.0.5 2022-08-17 <dave at tiredofit dot ca>
 
    ### Changed

@@ -44,7 +44,7 @@ if [ ! -f "${DATA_PATH}"/.mongodb_init ]; then
                 sanity_var DB_PASS "Database Pass"
 
                 print_notice "Creating a DB:${DB_NAME} user with password"
-                silent s6-setuidgid mongo admin -u "${ADMIN_USER}" -p "${ADMIN_PASS}" << EOF
+                silent s6-setuidgid mongo mongo admin -u "${ADMIN_USER}" -p "${ADMIN_PASS}" << EOF
 use ${DB_NAME}
 db.createUser({user: '${DB_USER}', pwd: '${DB_PASS}', roles:[{role:'dbOwner',db:'${DB_NAME}'}]})
 EOF
