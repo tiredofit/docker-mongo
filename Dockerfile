@@ -8,7 +8,7 @@ ARG MONGO_VERSION
 ARG MONGO_TOOLS_VERSION
 ARG GO_VERSION=1.20.3
 
-ENV MONGO_VERSION=${MONGO_VERSION:-r5.0.16} \
+ENV MONGO_VERSION=${MONGO_VERSION:-r5.0.17} \
     MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-master} \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     IMAGE_NAME="tiredofit/mongo:5" \
@@ -57,11 +57,12 @@ RUN source /assets/functions/00-container && \
     \
     package remove ${BUILD_DEPS} && \
     package cleanup && \
-    rm -rf /usr/src/* && \
-    rm -rf /usr/local/go && \
-    rm -rf /root/go && \
-    rm -rf /root/.cache && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf \
+           /root/go \
+           /root/.cache \
+           /usr/local/go \
+           /usr/src/* \
+           && \
 
 EXPOSE 27017 28017
 
