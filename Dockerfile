@@ -6,9 +6,9 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG MONGO_VERSION
 ARG MONGO_TOOLS_VERSION
-ARG GO_VERSION=1.20.4
+ARG GO_VERSION=1.21.3
 
-ENV MONGO_VERSION=${MONGO_VERSION:-r5.0.18} \
+ENV MONGO_VERSION=${MONGO_VERSION:-r5.0.22} \
     MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-master} \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     IMAGE_NAME="tiredofit/mongo:5" \
@@ -50,7 +50,7 @@ RUN source /assets/functions/00-container && \
     git clone https://github.com/mongodb/mongo /usr/src/mongo && \
     cd /usr/src/mongo && \
     git checkout "${MONGO_VERSION}" && \
-    python3 -m pip install -r etc/pip/compile-requirements.txt && \
+    python3 -m pip install -r etc/pip/compile-requirements.txt --break-system-packages && \
     python3 buildscripts/scons.py install-core --disable-warnings-as-errors && \
     strip build/install/bin/mongo* && \
     mv build/install/bin/* /usr/sbin && \
