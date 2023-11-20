@@ -1,3 +1,10 @@
+## 5.0-4.0.11 2023-11-20 <dave at tiredofit dot ca>
+
+   ### Added
+      - MongoDB 5.0.23
+      - Go Build 1.21.4
+
+
 ## 5.0-4.0.10 2023-10-25 <dave at tiredofit dot ca>
 
    ### Added
