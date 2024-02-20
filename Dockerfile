@@ -6,10 +6,10 @@ LABEL maintainer="Dave Conroy (github.com/tiredofit)"
 
 ARG MONGO_VERSION
 ARG MONGO_TOOLS_VERSION
-ARG GO_VERSION=1.21.6
+ARG GO_VERSION=1.21.7
 
-ENV MONGO_VERSION=${MONGO_VERSION:-r5.0.24} \
-    MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-master} \
+ENV MONGO_VERSION=${MONGO_VERSION:-"r5.0.25"} \
+    MONGO_TOOLS_VERSION=${MONGO_TOOLS_VERSION:-"master"} \
     CONTAINER_ENABLE_MESSAGING=FALSE \
     IMAGE_NAME="tiredofit/mongo:5" \
     IMAGE_REPO_URL="https://github.com/tiredofit/docker-mongo"
